@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', system-ui, sans-serif;
+    background-color: #f8f8f8;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-5 py-2.5 rounded text-sm font-semibold
+           hover:bg-primary-dark transition-colors duration-150;
+  }
+  .btn-outline {
+    @apply border border-primary text-primary px-5 py-2.5 rounded text-sm font-medium
+           hover:bg-primary-light transition-colors duration-150;
+  }
+  .btn-ghost {
+    @apply text-sm text-gray-500 px-3 py-2 rounded border border-gray-200
+           hover:bg-gray-50 transition-colors duration-150;
+  }
+  .card {
+    @apply bg-white border border-gray-200 rounded-lg;
+  }
+  .input {
+    @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
+           transition-colors;
+  }
+  .page-title {
+    @apply text-base font-semibold text-gray-800 pb-3 border-b-2 border-primary mb-6;
+  }
+  .board-row {
+    @apply flex items-center py-3 border-b border-gray-50 text-sm
+           hover:bg-primary-light transition-colors cursor-pointer;
+  }
+}
+
+/* 사진 스트립 — 홈 히어로 아래 무한 흘러가기 섹션 */
+.photo-strip-wrap {
+  background: #111;
+  padding: 14px 0;
+  overflow: hidden;
+  position: relative;
+}
+.photo-strip-wrap::before,
+.photo-strip-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+.photo-strip-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, #111, transparent);
+}
+.photo-strip-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, #111, transparent);
+}
+
+.photo-strip {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: scrollLeft 20s linear infinite;
+}
+.photo-strip:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.photo-card {
+  width: 200px;
+  height: 130px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+}
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.photo-card:hover img {
+  transform: scale(1.05);
+}
+.photo-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+.photo-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+}
+.photo-card-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 1px;
+}
+
+@media (max-width: 640px) {
+  .photo-card {
+    width: 160px;
+    height: 110px;
+  }
+}

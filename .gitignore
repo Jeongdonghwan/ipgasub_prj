@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.env
+
+# Node
+node_modules/
+
+# SQLite / Flask instance (서버에서 새로 생성)
+*.db
+instance/
+
+# 업로드 파일 (서버에서 새로 생성)
+uploads/
+
+# 배포 임시 산출물
+/deploy.tar.gz
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 참고: frontend/dist 는 서버 Node 없이 바로 서빙하려고 커밋에 포함합니다.

@@ -28,14 +28,14 @@ export default function AdminNoticeList() {
   return (
     <div>
       <PageHeader
-        title="공지사항 관리"
-        breadcrumbs={[{ label: '관리자' }, { label: '공지사항 관리' }]}
+        title="대회안내 관리"
+        breadcrumbs={[{ label: '관리자' }, { label: '대회안내 관리' }]}
       />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex justify-end mb-4">
           <Link to="/admin/notices/write" className="btn-primary text-xs flex items-center gap-1.5">
             <Plus className="w-3.5 h-3.5" />
-            새 공지 등록
+            새 대회안내 등록
           </Link>
         </div>
 
@@ -60,7 +60,7 @@ export default function AdminNoticeList() {
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                       n.category === 'event' ? 'bg-accent-light text-accent-dark' : 'bg-gray-100 text-gray-500'
                     }`}>
-                      {n.category === 'event' ? '행사' : '일반'}
+                      {n.category === 'event' ? '선발' : '대회'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-400">
@@ -90,7 +90,7 @@ export default function AdminNoticeList() {
 
       {deleteId !== null && (
         <ConfirmModal
-          title="공지사항 삭제"
+          title="대회안내 삭제"
           message="정말 삭제하시겠습니까?"
           danger
           onCancel={() => setDeleteId(null)}

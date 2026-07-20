@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Pencil, Trash2, Send, User, Calendar, Eye, Reply, CornerDownRight } from 'lucide-react'
 import DOMPurify from 'dompurify'
 import api from '../../api/axios'
@@ -7,6 +7,7 @@ import { useAuthStore } from '../../store/authStore'
 import PageHeader from '../../components/common/PageHeader'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ConfirmModal from '../../components/common/ConfirmModal'
+import { getBoardConfig } from '../../lib/boardConfig'
 import type { BoardPost } from '../../types'
 
 const MOCK_POSTS: Record<string, BoardPost> = {
@@ -26,7 +27,8 @@ const MOCK_POSTS: Record<string, BoardPost> = {
 }
 
 export default function BoardDetail() {
-  const { id } = useParams()
+  const { type, id } = useParams()
+  const config = getBoardConfig(type)
   const navigate = useNavigate()
   const { user, isLoggedIn, isAdmin } = useAuthStore()
   const [post, setPost] = useState<BoardPost | null>(null)
@@ -41,6 +43,7 @@ export default function BoardDetail() {
       .catch(() => setPost(MOCK_POSTS[id ?? '1'] ?? null))
   }, [id])
 
+  if (!config) return <Navigate to="/" replace />
   if (!post) {
     return <LoadingSpinner />
   }
@@ -49,7 +52,7 @@ export default function BoardDetail() {
 
   const handleDelete = async () => {
     await api.delete(`/api/board/${id}`)
-    navigate('/board')
+    navigate(`/board/${config.slug}`)
   }
 
   const reload = async () => {
@@ -81,8 +84,8 @@ export default function BoardDetail() {
   return (
     <div>
       <PageHeader
-        title="커뮤니티"
-        breadcrumbs={[{ label: '홈', to: '/' }, { label: '커뮤니티', to: '/board' }, { label: post.title }]}
+        title={config.title}
+        breadcrumbs={[{ label: '홈', to: '/' }, { label: config.title, to: `/board/${config.slug}` }, { label: post.title }]}
       />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="card animate-fade-in">
@@ -116,7 +119,7 @@ export default function BoardDetail() {
           {/* 액션 버튼 */}
           {canEdit && (
             <div className="px-5 py-3 border-t border-gray-100 flex gap-2 justify-end">
-              <Link to={`/board/${id}/edit`} className="btn-outline text-xs flex items-center gap-1">
+              <Link to={`/board/${config.slug}/${id}/edit`} className="btn-outline text-xs flex items-center gap-1">
                 <Pencil className="w-3 h-3" />
                 수정
               </Link>
@@ -240,7 +243,7 @@ export default function BoardDetail() {
         </div>
 
         <div className="mt-4 flex justify-end">
-          <Link to="/board" className="btn-ghost flex items-center gap-1.5">
+          <Link to={`/board/${config.slug}`} className="btn-ghost flex items-center gap-1.5">
             <ArrowLeft className="w-3.5 h-3.5" />
             목록으로
           </Link>

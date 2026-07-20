@@ -1,0 +1,1 @@
+import{a as o}from"./axios-DbECNT_g.js";async function i(a,e){return(await o.post("/api/auth/login",{username:a,password:e})).data.data}function p(a,e){var r,t;return((t=(r=a.response)==null?void 0:r.data)==null?void 0:t.error)??e}export{p as e,i as l};

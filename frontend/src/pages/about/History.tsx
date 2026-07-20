@@ -1,45 +1,33 @@
-import PageHeader from '../../components/common/PageHeader'
-import AboutSubNav from '../../components/common/AboutSubNav'
-import { SAMPLE_IMAGES } from '../../lib/sampleImages'
+import StaticPage from '../../components/common/StaticPage'
 
 const HISTORY = [
-  { year: '2024', events: ['정기산행 12회 실시', '회원 100명 돌파'] },
-  { year: '2023', events: ['전국 명산 탐방 프로그램 시작', '공식 홈페이지 개설'] },
-  { year: '2022', events: ['산악 안전 교육 프로그램 도입', '가을 단풍 특별산행'] },
-  { year: '2021', events: ['회원 50명 달성', '월례 산행 정례화'] },
-  { year: '2020', events: ['국민산악회 창립', '북한산 첫 정기산행'] },
+  { year: '2025', events: ['국제 교류 대회 개최', '회원 1,000명 돌파'] },
+  { year: '2024', events: ['정회원 선발 테스트대회 정례화', '골프 지도자 교육원 개설'] },
+  { year: '2023', events: ['공식 홈페이지 개편', '전문인 골프대회 신설'] },
+  { year: '2022', events: ['사단법인 설립 인가', 'IPGA배 아마추어 골프대회 창설'] },
+  { year: '2021', events: ['국제프로골프협회 창립 발기인 총회'] },
 ]
 
 export default function History() {
   return (
-    <div>
-      <PageHeader
-        title="연혁"
-        image={SAMPLE_IMAGES[0]}
-        breadcrumbs={[{ label: '홈', to: '/' }, { label: '산악회 소개' }, { label: '연혁' }]}
-      />
-      <AboutSubNav />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="card px-6 py-8">
-          <div className="space-y-6">
-            {HISTORY.map((h) => (
-              <div key={h.year} className="flex gap-6">
-                <div className="shrink-0 w-16 text-right">
-                  <span className="text-lg font-bold text-primary">{h.year}</span>
-                </div>
-                <div className="relative pl-6 border-l-2 border-primary/20 pb-2">
-                  <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-primary" />
-                  <ul className="space-y-1.5">
-                    {h.events.map((e, i) => (
-                      <li key={i} className="text-sm text-gray-600">{e}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+    <StaticPage title="연혁">
+      <div className="space-y-6">
+        {HISTORY.map((h) => (
+          <div key={h.year} className="flex gap-6">
+            <div className="shrink-0 w-16 text-right">
+              <span className="text-lg font-bold text-primary">{h.year}</span>
+            </div>
+            <div className="relative pl-6 border-l-2 border-primary/20 pb-2">
+              <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-primary" />
+              <ul className="space-y-1.5">
+                {h.events.map((e, i) => (
+                  <li key={i} className="text-sm text-gray-600">{e}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
-    </div>
+    </StaticPage>
   )
 }

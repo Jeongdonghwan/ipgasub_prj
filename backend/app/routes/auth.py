@@ -79,6 +79,24 @@ def me():
     return jsonify({'success': True, 'data': user.to_dict()})
 
 
+# ─── 회원검색 (공개) ─────────────────────────────────────────────────────────
+@auth_bp.route('/members/search', methods=['GET'])
+def search_members():
+    name = (request.args.get('name') or '').strip()
+    if len(name) < 2:
+        return jsonify({'success': False, 'error': '검색어를 2자 이상 입력하세요.'}), 400
+    members = User.query.filter(
+        User.role == 'member',
+        User.is_approved.is_(True),
+        User.is_active.is_(True),
+        User.name.ilike(f'%{name}%'),
+    ).order_by(User.name).limit(50).all()
+    # 개인정보 최소화: 이름·가입일만 공개
+    return jsonify({'success': True, 'data': {
+        'items': [{'id': m.id, 'name': m.name, 'created_at': m.created_at.strftime('%Y.%m.%d')} for m in members],
+    }})
+
+
 # ─── 회원 관리 (관리자) ──────────────────────────────────────────────────────
 @auth_bp.route('/members', methods=['GET'])
 @admin_required

@@ -60,6 +60,7 @@ export interface BoardComment {
 
 export interface BoardPost {
   id: number
+  board_type?: string
   title: string
   content: string
   image?: string | null
@@ -107,6 +108,36 @@ export interface GalleryListResponse {
   total: number
   pages: number
   page: number
+}
+
+// ─── 회원검색 ────────────────────────────────────────────────────────────────
+export interface MemberSearchItem {
+  id: number
+  name: string
+  created_at: string
+}
+
+// ─── 신청서 ──────────────────────────────────────────────────────────────────
+export interface RegistrationRequest {
+  id: number
+  name: string
+  phone: string
+  email: string
+  birth: string
+  content: string
+  status: 'pending' | 'done' | 'rejected'
+  created_at: string
+}
+
+export interface CertificateRequest {
+  id: number
+  user_id: number
+  user_name: string
+  username: string
+  cert_type: 'membership' | 'career' | 'award'
+  purpose: string
+  status: 'pending' | 'issued' | 'rejected'
+  created_at: string
 }
 
 // ─── API 공통 래퍼 ────────────────────────────────────────────────────────────

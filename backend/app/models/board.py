@@ -1,11 +1,16 @@
 from datetime import datetime
 from .. import db
 
+# 게시판 종류: ipga=IPGA게시판, news=골프뉴스(관리자 작성) / jobs·market·tour·events=커뮤니티(회원 작성)
+VALID_BOARD_TYPES = {'ipga', 'news', 'jobs', 'market', 'tour', 'events'}
+ADMIN_BOARDS = {'ipga', 'news'}
+
 
 class BoardPost(db.Model):
     __tablename__ = 'board_posts'
 
     id = db.Column(db.Integer, primary_key=True)
+    board_type = db.Column(db.String(20), nullable=False, server_default='ipga', index=True)
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(500), default=None)   # 첨부 이미지 (상대경로)
@@ -21,6 +26,7 @@ class BoardPost(db.Model):
     def to_dict(self, include_comments=False):
         d = {
             'id': self.id,
+            'board_type': self.board_type,
             'title': self.title,
             'content': self.content,
             'image': self.image,

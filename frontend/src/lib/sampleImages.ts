@@ -1,13 +1,13 @@
-// 샘플 이미지 (실제 서비스: API 이미지로 교체) — Unsplash 초록 산·숲 사진
+// 샘플 이미지 (실제 서비스: API 이미지로 교체) — Unsplash 골프 사진
 // TODO: 실제 갤러리/업로드 이미지 연동 후 제거
-// 인덱스 0·4·5 = 히어로 슬라이드용 초록 산 전경
+// 인덱스 0·1·2 = 히어로 슬라이드용
 export const SAMPLE_IMAGES = [
-  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80', // 초록 안개 산
-  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80', // 초록 숲 햇살
-  'https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=800&q=80', // 초록 침엽수림
-  'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=80', // 숲 사이 햇살
-  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80', // 초록 능선 구릉
-  'https://images.unsplash.com/photo-1500534623283-312aade485b7?w=800&q=80', // 초록 계곡
-  'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&q=80', // 초록 언덕 길
-  'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&q=80', // 초록 잎사귀 햇살
+  'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1200&q=80', // 골프코스 전경
+  'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1200&q=80', // 골프 필드
+  'https://images.unsplash.com/photo-1592919505780-303950717480?w=1200&q=80', // 골프장
+  'https://images.unsplash.com/photo-1535132011086-b8818f016104?w=800&q=80',  // 골프 스윙
+  'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?w=800&q=80',  // 골프공/홀
+  'https://images.unsplash.com/photo-1611374243147-44a702c2d44c?w=800&q=80',  // 골프 카트/코스
+  'https://images.unsplash.com/photo-1587381420270-3e1a5b9e6904?w=800&q=80',  // 골프 그린
+  'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=800&q=80',  // 골프 클럽
 ]

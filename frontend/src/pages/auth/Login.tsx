@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { User, Lock } from 'lucide-react'
-import api from '../../api/axios'
 import { useAuthStore } from '../../store/authStore'
-import type { ApiResponse, LoginResponse } from '../../types'
+import { loginRequest, errorMessage } from '../../api/auth'
 
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' })
@@ -17,13 +16,11 @@ export default function Login() {
     setError('')
     setLoading(true)
     try {
-      const res = await api.post<ApiResponse<LoginResponse>>('/api/auth/login', form)
-      const { user, access_token, refresh_token } = res.data.data!
+      const { user, access_token, refresh_token } = await loginRequest(form.username, form.password)
       setAuth(user, access_token, refresh_token)
       navigate('/')
     } catch (err: unknown) {
-      const axiosErr = err as { response?: { data?: { error?: string } } }
-      setError(axiosErr.response?.data?.error ?? '로그인에 실패했습니다.')
+      setError(errorMessage(err, '로그인에 실패했습니다.'))
     } finally {
       setLoading(false)
     }
@@ -34,10 +31,12 @@ export default function Login() {
       <div className="w-full max-w-[380px] animate-fade-in">
         {/* 로고 + 태그라인 */}
         <div className="flex flex-col items-center mb-9">
-          <Link to="/">
-            <img src="/logo.png" alt="국민산악회" className="h-16 w-auto mb-4" />
+          <Link to="/" className="text-center leading-tight">
+            <span className="block text-[10px] text-gray-400 tracking-wide">사단법인</span>
+            <span className="block text-xl font-extrabold text-gray-900 tracking-tight">
+              대한민국골프<span className="text-primary">&amp;</span>파크기술협회
+            </span>
           </Link>
-          <p className="text-sm text-gray-400">함께 걷는 길, 더 아름다운 산</p>
         </div>
 
         {error && (
@@ -94,6 +93,9 @@ export default function Login() {
           <p className="mt-3 text-xs text-gray-300">
             가입 후 관리자 승인이 완료되면 로그인할 수 있습니다.
           </p>
+          <Link to="/auth/find" className="inline-block mt-4 text-xs text-gray-400 hover:text-primary">
+            아이디 · 비밀번호 찾기
+          </Link>
         </div>
       </div>
     </div>

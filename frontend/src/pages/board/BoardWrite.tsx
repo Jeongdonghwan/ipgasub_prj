@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from 'react'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation, Navigate } from 'react-router-dom'
 import { Save, Image as ImageIcon, X } from 'lucide-react'
 import api from '../../api/axios'
 import PageHeader from '../../components/common/PageHeader'
 import { useToastStore } from '../../store/toastStore'
+import { getBoardConfig } from '../../lib/boardConfig'
 
 export default function BoardWrite() {
-  const { id } = useParams()
+  const { type, id } = useParams()
+  const config = getBoardConfig(type)
   const location = useLocation()
   const navigate = useNavigate()
   const isEdit = !!id && location.pathname.includes('/edit')
@@ -61,16 +63,17 @@ export default function BoardWrite() {
       const fd = new FormData()
       fd.append('title', title)
       fd.append('content', content)
+      if (!isEdit && config) fd.append('board_type', config.slug)
       if (imgFile) fd.append('image', imgFile)
       if (removeImage) fd.append('remove_image', 'true')
       const cfg = { headers: { 'Content-Type': 'multipart/form-data' } }
 
       if (isEdit) {
         await api.put(`/api/board/${id}`, fd, cfg)
-        navigate(`/board/${id}`)
+        navigate(`/board/${type}/${id}`)
       } else {
         const res = await api.post('/api/board/', fd, cfg)
-        navigate(`/board/${res.data.data.id}`)
+        navigate(`/board/${type}/${res.data.data.id}`)
       }
     } catch {
       toast.show('error', '저장에 실패했습니다.')
@@ -79,11 +82,13 @@ export default function BoardWrite() {
     }
   }
 
+  if (!config) return <Navigate to="/" replace />
+
   return (
     <div>
       <PageHeader
-        title={isEdit ? '게시글 수정' : '게시글 작성'}
-        breadcrumbs={[{ label: '홈', to: '/' }, { label: '커뮤니티', to: '/board' }, { label: isEdit ? '수정' : '작성' }]}
+        title={isEdit ? `${config.title} 수정` : `${config.title} 작성`}
+        breadcrumbs={[{ label: '홈', to: '/' }, { label: config.title, to: `/board/${config.slug}` }, { label: isEdit ? '수정' : '작성' }]}
       />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <form onSubmit={handleSubmit} className="card p-5 flex flex-col gap-4">

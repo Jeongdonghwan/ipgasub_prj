@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from .. import db
-from ..models.board import BoardPost, BoardComment
+from ..models.board import BoardPost, BoardComment, VALID_BOARD_TYPES, ADMIN_BOARDS
 from ..models.user import User
 from ..utils.image_utils import save_image
 
@@ -20,12 +20,14 @@ def _post_payload():
         return {
             'title': f.get('title', '').strip(),
             'content': f.get('content', '').strip(),
+            'board_type': f.get('board_type', 'ipga'),
             'remove_image': f.get('remove_image', 'false').lower() == 'true',
         }, request.files.get('image')
     data = request.get_json() or {}
     return {
         'title': (data.get('title') or '').strip(),
         'content': (data.get('content') or '').strip(),
+        'board_type': data.get('board_type', 'ipga'),
         'remove_image': bool(data.get('remove_image', False)),
     }, None
 
@@ -33,8 +35,16 @@ def _post_payload():
 @board_bp.route('/', methods=['GET'])
 def list_posts():
     page = request.args.get('page', 1, type=int)
-    per_page = 15
-    pagination = BoardPost.query.order_by(BoardPost.created_at.desc()).paginate(
+    per_page = min(request.args.get('per_page', 15, type=int), 20)
+    board_type = request.args.get('type')
+
+    query = BoardPost.query
+    if board_type:
+        if board_type not in VALID_BOARD_TYPES:
+            return jsonify({'success': False, 'error': '잘못된 게시판입니다.'}), 400
+        query = query.filter_by(board_type=board_type)
+
+    pagination = query.order_by(BoardPost.created_at.desc()).paginate(
         page=page, per_page=per_page, error_out=False
     )
     return jsonify({
@@ -62,10 +72,19 @@ def create_post():
     payload, img = _post_payload()
     if not payload['title'] or not payload['content']:
         return jsonify({'success': False, 'error': '제목과 내용을 입력하세요.'}), 400
+    board_type = payload['board_type']
+    if board_type not in VALID_BOARD_TYPES:
+        return jsonify({'success': False, 'error': '잘못된 게시판입니다.'}), 400
+    user_id = get_jwt_identity()
+    if board_type in ADMIN_BOARDS:
+        user = User.query.get(user_id)
+        if not user or user.role != 'admin':
+            return jsonify({'success': False, 'error': '관리자만 작성할 수 있는 게시판입니다.'}), 403
     post = BoardPost(
+        board_type=board_type,
         title=payload['title'],
         content=payload['content'],
-        author_id=get_jwt_identity(),
+        author_id=user_id,
     )
     if img and img.filename:
         orig, _ = save_image(img, current_app.config['UPLOAD_FOLDER'])

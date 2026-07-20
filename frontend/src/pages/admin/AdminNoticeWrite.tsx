@@ -86,8 +86,8 @@ export default function AdminNoticeWrite() {
   return (
     <div>
       <PageHeader
-        title={isEdit ? '공지사항 수정' : '공지사항 등록'}
-        breadcrumbs={[{ label: '관리자' }, { label: '공지사항 관리', to: '/admin/notices' }, { label: isEdit ? '수정' : '등록' }]}
+        title={isEdit ? '대회안내 수정' : '대회안내 등록'}
+        breadcrumbs={[{ label: '관리자' }, { label: '대회안내 관리', to: '/admin/notices' }, { label: isEdit ? '수정' : '등록' }]}
       />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <form onSubmit={handleSubmit} className="card p-5 flex flex-col gap-4">
@@ -98,7 +98,7 @@ export default function AdminNoticeWrite() {
                 className="input"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="공지 제목"
+                placeholder="대회/선발 제목"
                 required
               />
             </div>
@@ -109,8 +109,8 @@ export default function AdminNoticeWrite() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value as 'general' | 'event')}
               >
-                <option value="general">일반</option>
-                <option value="event">행사</option>
+                <option value="general">대회</option>
+                <option value="event">선발</option>
               </select>
             </div>
           </div>

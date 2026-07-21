@@ -1,6 +1,0 @@
-import{c as t,j as e,L as a}from"./index-CAXfmfZr.js";/**
- * @license lucide-react v1.0.1 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const s=[["path",{d:"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z",key:"1s6t7t"}],["circle",{cx:"16.5",cy:"7.5",r:".5",fill:"currentColor",key:"w0ekpg"}]],n=t("key-round",s);function c(){return e.jsx("div",{className:"min-h-[70vh] flex items-center justify-center px-4 py-12",children:e.jsxs("div",{className:"w-full max-w-[400px] text-center animate-fade-in",children:[e.jsx("div",{className:"w-16 h-16 rounded-full bg-primary-light flex items-center justify-center mx-auto mb-5",children:e.jsx(n,{className:"w-7 h-7 text-primary"})}),e.jsx("h1",{className:"text-lg font-bold text-gray-800 mb-2",children:"아이디 · 비밀번호 찾기"}),e.jsxs("p",{className:"text-sm text-gray-400 leading-relaxed mb-8",children:["해당 기능은 준비 중입니다.",e.jsx("br",{}),"계정 관련 문의는 협회 사무국(02-000-0000)으로 연락 주세요."]}),e.jsx(a,{to:"/auth/login",className:"btn-primary inline-block px-8 py-3",children:"로그인으로 돌아가기"})]})})}export{c as default};

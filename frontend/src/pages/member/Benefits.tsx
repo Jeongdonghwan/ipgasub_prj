@@ -1,20 +1,36 @@
 import StaticPage from '../../components/common/StaticPage'
+import { Award, BadgeCheck, CreditCard } from 'lucide-react'
+
+const BENEFITS = [
+  { icon: Award, title: '지도자 자격증 발급', desc: '교육 과정 수료 후 협회 지도자 자격증을 발급합니다.' },
+  { icon: BadgeCheck, title: '심판 자격증 발급', desc: '심판 교육 이수자에게 심판 자격증을 발급합니다.' },
+  { icon: CreditCard, title: '자격증 카드 발급', desc: '휴대 가능한 자격증 카드를 발급해 드립니다.' },
+]
 
 export default function Benefits() {
   return (
     <StaticPage title="회원혜택">
-      <h2 className="text-lg font-bold text-gray-800 mb-4">회원 혜택</h2>
-      <div className="space-y-4">
-        <p>협회 정회원에게는 다음과 같은 혜택이 제공됩니다.</p>
-        <ul className="list-disc pl-5 space-y-1.5">
-          <li>협회 주관 대회 참가 자격 부여</li>
-          <li>정회원 증명서 및 경력 증명서 발급</li>
-          <li>제휴 골프장·용품 할인 혜택</li>
-          <li>교육 프로그램 우선·할인 참여</li>
-          <li>협회 소식 및 구인·구직 정보 제공</li>
-        </ul>
-        <p className="text-gray-400 text-xs pt-2">※ 제휴 혜택은 시기에 따라 달라질 수 있습니다.</p>
+      <h2 className="text-lg font-bold text-gray-900 mb-5">회원 혜택</h2>
+      <p className="mb-6">협회 회원에게는 다음과 같은 혜택이 제공됩니다.</p>
+
+      <div className="grid sm:grid-cols-3 gap-3">
+        {BENEFITS.map((b) => {
+          const Icon = b.icon
+          return (
+            <div key={b.title} className="rounded-xl border border-gray-100 bg-surface px-5 py-6 text-center">
+              <div className="w-12 h-12 rounded-full bg-primary-light mx-auto mb-3 flex items-center justify-center">
+                <Icon className="w-6 h-6 text-primary" />
+              </div>
+              <div className="text-sm font-bold text-gray-900 mb-1.5">{b.title}</div>
+              <div className="text-xs text-gray-400 leading-relaxed">{b.desc}</div>
+            </div>
+          )
+        })}
       </div>
+
+      <p className="text-xs text-gray-400 mt-6">
+        ※ 자격증 발급 절차 및 비용은 협회 사무국(062-945-9015)으로 문의해 주시기 바랍니다.
+      </p>
     </StaticPage>
   )
 }

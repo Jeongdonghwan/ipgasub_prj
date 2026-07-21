@@ -1,18 +1,39 @@
+import { Link } from 'react-router-dom'
 import StaticPage from '../../components/common/StaticPage'
+
+const STEPS = [
+  { no: '01', title: '회원 등록 신청', desc: '회원 등록 신청서를 작성해 제출합니다.' },
+  { no: '02', title: '교육 이수', desc: '8주 과정(주 1회) 교육을 이수합니다.' },
+  { no: '03', title: '자격 심사', desc: '협회 기준에 따라 심사를 진행합니다.' },
+  { no: '04', title: '자격증 발급', desc: '지도자 · 심판 자격증 및 카드를 발급합니다.' },
+]
 
 export default function SelectionGuide() {
   return (
     <StaticPage title="선발안내">
-      <h2 className="text-lg font-bold text-gray-800 mb-4">정회원 선발 안내</h2>
-      <div className="space-y-4">
-        <p>정회원은 협회가 주관하는 선발 테스트대회를 통해 선발됩니다.</p>
-        <ul className="list-disc pl-5 space-y-1.5">
-          <li>지원 자격: 만 18세 이상, 협회 정관에서 정한 요건 충족자</li>
-          <li>선발 절차: 서류 접수 → 실기 테스트 → 최종 심사</li>
-          <li>선발 일정: 연 2회(상·하반기), 세부 일정은 대회안내 공지 참고</li>
-          <li>제출 서류: 회원등록신청서, 신분증 사본 등</li>
-        </ul>
-        <p className="text-gray-400 text-xs pt-2">※ 세부 기준은 협회 사정에 따라 변경될 수 있습니다.</p>
+      <h2 className="text-lg font-bold text-gray-900 mb-5">회원 선발 안내</h2>
+      <p className="mb-6">
+        협회는 골프와 파크골프의 올바른 기술 보급과 전문 지도자·심판 양성을 위해
+        다음 절차에 따라 회원을 선발합니다.
+      </p>
+
+      <div className="grid sm:grid-cols-2 gap-3 mb-8">
+        {STEPS.map((s) => (
+          <div key={s.no} className="rounded-xl border border-gray-100 bg-surface px-5 py-4 flex gap-4">
+            <span className="text-xl font-extrabold text-primary/30 shrink-0">{s.no}</span>
+            <div>
+              <div className="text-sm font-bold text-gray-900">{s.title}</div>
+              <div className="text-xs text-gray-400 mt-1 leading-relaxed">{s.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-gray-100">
+        <Link to="/member/register-form" className="btn-primary text-sm">회원 등록 신청하기</Link>
+        <span className="text-xs text-gray-400">
+          세부 일정 문의 : 062-945-9015
+        </span>
       </div>
     </StaticPage>
   )

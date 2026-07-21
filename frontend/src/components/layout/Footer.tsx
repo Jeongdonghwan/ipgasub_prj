@@ -32,7 +32,7 @@ export default function Footer() {
               <User className="w-4 h-4 text-primary shrink-0" /> 대표자 : 김광만
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-primary shrink-0" /> 062-000-0000
+              <Phone className="w-4 h-4 text-primary shrink-0" /> 062-945-9015
             </li>
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-primary shrink-0" /> info@kgpta.or.kr

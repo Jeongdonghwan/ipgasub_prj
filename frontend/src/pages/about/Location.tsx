@@ -25,28 +25,28 @@ export default function Location() {
             <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div>
               <div className="font-semibold text-gray-800">주소</div>
-              <div className="text-gray-500">서울특별시 ○○구 ○○로 000, 0층 (○○동)</div>
+              <div className="text-gray-500">전남광주통합특별시 광산구 상무대로 104 (도산동, 해송빌딩)</div>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div>
               <div className="font-semibold text-gray-800">전화</div>
-              <div className="text-gray-500">02-000-0000</div>
+              <div className="text-gray-500">062-945-9015</div>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <Train className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div>
-              <div className="font-semibold text-gray-800">지하철</div>
-              <div className="text-gray-500">○○선 ○○역 0번 출구에서 도보 5분</div>
+              <div className="font-semibold text-gray-800">대중교통</div>
+              <div className="text-gray-500">광주 도시철도 1호선 도산역 인근 · 상무대로 경유 버스 이용</div>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <Car className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div>
               <div className="font-semibold text-gray-800">주차</div>
-              <div className="text-gray-500">건물 지하 주차장 이용 가능</div>
+              <div className="text-gray-500">건물 주차장 이용 가능</div>
             </div>
           </div>
         </div>

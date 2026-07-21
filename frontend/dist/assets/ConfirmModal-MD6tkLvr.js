@@ -1,6 +1,0 @@
-import{c,j as e}from"./index-CAXfmfZr.js";/**
- * @license lucide-react v1.0.1 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const d=[["path",{d:"M10 11v6",key:"nco0om"}],["path",{d:"M14 11v6",key:"outv1u"}],["path",{d:"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",key:"miytrc"}],["path",{d:"M3 6h18",key:"d0wm0j"}],["path",{d:"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",key:"e791ji"}]],r=c("trash-2",d);function o({title:a,message:t,onConfirm:i,onCancel:s,danger:n}){return e.jsxs("div",{className:"fixed inset-0 z-50 flex items-center justify-center px-4",children:[e.jsx("div",{className:"absolute inset-0 bg-black/40",onClick:s}),e.jsxs("div",{className:"relative bg-white rounded-xl shadow-xl max-w-sm w-full p-6 animate-fade-in",children:[e.jsx("h3",{className:"text-base font-semibold text-gray-900 mb-2",children:a}),e.jsx("p",{className:"text-sm text-gray-500 mb-6",children:t}),e.jsxs("div",{className:"flex gap-2 justify-end",children:[e.jsx("button",{onClick:s,className:"btn-ghost",children:"취소"}),e.jsx("button",{onClick:i,className:n?"btn-danger":"btn-primary",children:"확인"})]})]})]})}export{o as C,r as T};

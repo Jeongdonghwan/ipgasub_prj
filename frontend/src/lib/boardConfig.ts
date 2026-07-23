@@ -10,7 +10,7 @@ export interface BoardConfig {
 }
 
 export const BOARD_CONFIGS: Record<BoardType, BoardConfig> = {
-  ipga:   { slug: 'ipga',   title: 'IPGA 게시판', group: '미디어',   groupPath: '/board/ipga',    writeRole: 'admin' },
+  ipga:   { slug: 'ipga',   title: '협회 게시판', group: '미디어',   groupPath: '/board/ipga',    writeRole: 'admin' },
   news:   { slug: 'news',   title: '골프 뉴스',   group: '미디어',   groupPath: '/board/ipga',    writeRole: 'admin' },
   jobs:   { slug: 'jobs',   title: '구인구직',    group: '커뮤니티', groupPath: '/board/jobs',    writeRole: 'member' },
   market: { slug: 'market', title: '매매',        group: '커뮤니티', groupPath: '/board/jobs',    writeRole: 'member' },

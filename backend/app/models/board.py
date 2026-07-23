@@ -1,7 +1,7 @@
 from datetime import datetime
 from .. import db
 
-# 게시판 종류: ipga=IPGA게시판, news=골프뉴스(관리자 작성) / jobs·market·tour·events=커뮤니티(회원 작성)
+# 게시판 종류: ipga=협회게시판, news=골프뉴스(관리자 작성) / jobs·market·tour·events=커뮤니티(회원 작성)
 VALID_BOARD_TYPES = {'ipga', 'news', 'jobs', 'market', 'tour', 'events'}
 ADMIN_BOARDS = {'ipga', 'news'}
 

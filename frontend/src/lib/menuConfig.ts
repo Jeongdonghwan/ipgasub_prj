@@ -46,7 +46,7 @@ export const MENU: MenuGroup[] = [
     label: '미디어',
     to: '/board/ipga',
     children: [
-      { label: 'IPGA 게시판', to: '/board/ipga' },
+      { label: '협회 게시판', to: '/board/ipga' },
       { label: '포토갤러리', to: '/gallery' },
     ],
   },

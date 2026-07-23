@@ -11,9 +11,9 @@ import ImageCarousel from '../components/common/ImageCarousel'
 
 // ① 히어로 슬라이드
 const HERO_SLIDES = [
-  { img: SAMPLE_IMAGES[0], badge: '사단법인 국제프로골프협회', title: '프로 골프의\n미래를 함께', sub: '공정한 선발 · 체계적 교육 · 건강한 골프 문화' },
-  { img: SAMPLE_IMAGES[1], badge: '2026 정회원 선발', title: '정회원선발\n테스트대회', sub: '프로의 꿈을 향한 첫걸음, IPGA가 함께합니다' },
-  { img: SAMPLE_IMAGES[2], badge: '회원 안내', title: 'IPGA와 함께\n성장하세요', sub: '대회 · 교육 · 다양한 회원 혜택' },
+  { img: SAMPLE_IMAGES[0], badge: '사단법인 대한민국골프&파크기술협회', title: '배려 · 나눔\n매너 · 치유', sub: '골프와 파크골프의 올바른 기술 보급과 건전한 스포츠 문화' },
+  { img: SAMPLE_IMAGES[1], badge: '전문 인력 양성', title: '전문 지도자와\n심판을 양성합니다', sub: '8주 체계적 교육 과정 · 지도자 · 심판 자격증 발급' },
+  { img: SAMPLE_IMAGES[2], badge: '회원 안내', title: '함께 성장하는\n아름다운 공동체', sub: '국민의 건강 증진과 삶의 질 향상에 기여합니다' },
 ]
 
 // ② 회원서비스 바로가기
@@ -127,10 +127,10 @@ export default function Home() {
         }))} />
       </section>
 
-      {/* ④ IPGA 게시판 + 골프 뉴스 — 좌우 대칭 2단 */}
+      {/* ④ 협회 게시판 + 골프 뉴스 — 좌우 대칭 2단 */}
       <section className="max-w-6xl mx-auto px-4 py-10">
         <div className="grid md:grid-cols-2 gap-8">
-          <PostColumn title="IPGA 게시판" moreTo="/board/ipga" posts={ipgaPosts.slice(0, 5)} linkBase="/board/ipga" />
+          <PostColumn title="협회 게시판" moreTo="/board/ipga" posts={ipgaPosts.slice(0, 5)} linkBase="/board/ipga" />
           <PostColumn title="골프 뉴스" moreTo="/board/news" posts={newsPosts.slice(0, 5)} linkBase="/board/news" />
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function Home() {
 }
 
 const PLACEHOLDER_ALBUMS: GalleryAlbum[] = [
-  { id: 0, title: 'IPGA 대회 현장', description: '', cover_image: null, author_id: 0, author_name: '', photo_count: 0, created_at: '' },
+  { id: 0, title: '협회 대회 현장', description: '', cover_image: null, author_id: 0, author_name: '', photo_count: 0, created_at: '' },
   { id: 0, title: '정회원 선발전', description: '', cover_image: null, author_id: 0, author_name: '', photo_count: 0, created_at: '' },
   { id: 0, title: '골프 아카데미', description: '', cover_image: null, author_id: 0, author_name: '', photo_count: 0, created_at: '' },
   { id: 0, title: '친선 골프대회', description: '', cover_image: null, author_id: 0, author_name: '', photo_count: 0, created_at: '' },

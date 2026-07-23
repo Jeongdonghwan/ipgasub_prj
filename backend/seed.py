@@ -31,7 +31,7 @@ with app.app_context():
     # 2) 게시판 ───────────────────────────────────────────
     BOARDS = {
         'ipga': (admin, [
-            '2026년 IPGA 정기총회 개최 안내',
+            '2026년 협회 정기총회 개최 안내',
             '협회 사무국 이전 안내',
             '2026년도 정기이사회 결과 공고',
             '협회 정관 일부 개정 안내',
@@ -94,7 +94,7 @@ with app.app_context():
     NOTICES = [
         ('general', '정회원선발 테스트대회 안내', True),
         ('general', '전문인 골프대회 개최', False),
-        ('general', 'IPGA배 아마추어 골프대회', False),
+        ('general', '전국 아마추어 골프대회', False),
         ('general', '정회원 친선골프대회', False),
         ('general', '오픈 골프대회 참가 안내', False),
         ('general', '시니어부 골프대회 개최', False),

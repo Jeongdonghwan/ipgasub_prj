@@ -11,7 +11,7 @@ import type { BoardListResponse } from '../../types'
 
 const MOCK_BOARD_LIST: BoardListResponse = {
   items: [
-    { id: 1, board_type: 'ipga', title: '2026년 IPGA 정기총회 개최 안내', content: '', author_id: 1, author_name: '관리자', views: 56, comment_count: 3, created_at: '2026.03.22', updated_at: '2026.03.22' },
+    { id: 1, board_type: 'ipga', title: '2026년 협회 정기총회 개최 안내', content: '', author_id: 1, author_name: '관리자', views: 56, comment_count: 3, created_at: '2026.03.22', updated_at: '2026.03.22' },
     { id: 2, board_type: 'ipga', title: '협회 사무국 이전 안내', content: '', author_id: 1, author_name: '관리자', views: 42, comment_count: 1, created_at: '2026.03.21', updated_at: '2026.03.21' },
   ],
   total: 2, pages: 1, page: 1,

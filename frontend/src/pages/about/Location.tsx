@@ -11,14 +11,6 @@ export default function Location() {
       />
       <SubNav />
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* 지도 placeholder */}
-        <div className="card overflow-hidden mb-6">
-          <div className="aspect-[16/8] bg-gray-100 flex flex-col items-center justify-center text-gray-400">
-            <MapPin className="w-10 h-10 mb-2" />
-            <p className="text-sm">지도 영역 (추후 지도 API 연동)</p>
-          </div>
-        </div>
-
         {/* 주소/교통 */}
         <div className="card px-6 py-6 space-y-4 text-sm">
           <div className="flex items-start gap-3">

@@ -114,16 +114,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ③ 대회안내 — 가로 슬라이드 */}
+      {/* ③ 포토갤러리 — 가로 슬라이드 */}
       <section className="max-w-6xl mx-auto px-4 py-10">
-        <SectionHead title="대회안내" moreTo="/tournament/info" />
-        <ImageCarousel items={notices.map((n, i) => ({
-          key: n.id,
-          title: n.title,
-          sub: n.created_at,
-          label: '대회안내',
-          img: n.thumbnail ? `/uploads/${n.thumbnail}` : SAMPLE_IMAGES[i % SAMPLE_IMAGES.length],
-          to: `/tournament/${n.id}`,
+        <SectionHead title="포토갤러리" moreTo="/gallery" />
+        <ImageCarousel perView={3} ratio={0.72} items={(albums.length > 0 ? albums : PLACEHOLDER_ALBUMS).map((a, i) => ({
+          key: a.id ? `a${a.id}` : `p${i}`,
+          title: a.title,
+          sub: a.photo_count ? `사진 ${a.photo_count}장` : undefined,
+          label: '포토갤러리',
+          img: a.cover_image ? `/uploads/${a.cover_image}` : SAMPLE_IMAGES[(i + 3) % SAMPLE_IMAGES.length],
+          to: a.id ? `/gallery/${a.id}` : '/gallery',
         }))} />
       </section>
 
@@ -135,16 +135,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ⑤ 포토갤러리 — 맨 하단 가로 슬라이드 */}
+      {/* ⑤ 대회안내 — 맨 하단 가로 슬라이드 */}
       <section className="max-w-6xl mx-auto px-4 pb-16">
-        <SectionHead title="포토갤러리" moreTo="/gallery" />
-        <ImageCarousel perView={3} ratio={0.72} items={(albums.length > 0 ? albums : PLACEHOLDER_ALBUMS).map((a, i) => ({
-          key: a.id ? `a${a.id}` : `p${i}`,
-          title: a.title,
-          sub: a.photo_count ? `사진 ${a.photo_count}장` : undefined,
-          label: '포토갤러리',
-          img: a.cover_image ? `/uploads/${a.cover_image}` : SAMPLE_IMAGES[(i + 3) % SAMPLE_IMAGES.length],
-          to: a.id ? `/gallery/${a.id}` : '/gallery',
+        <SectionHead title="대회안내" moreTo="/tournament/info" />
+        <ImageCarousel items={notices.map((n, i) => ({
+          key: n.id,
+          title: n.title,
+          sub: n.created_at,
+          label: '대회안내',
+          img: n.thumbnail ? `/uploads/${n.thumbnail}` : SAMPLE_IMAGES[i % SAMPLE_IMAGES.length],
+          to: `/tournament/${n.id}`,
         }))} />
       </section>
     </div>

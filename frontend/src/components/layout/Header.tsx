@@ -44,6 +44,9 @@ export default function Header() {
             <span className="block text-[18px] md:text-[20px] font-extrabold text-gray-900 tracking-tight">
               대한민국골프<span className="text-primary">&amp;</span>파크기술협회
             </span>
+            <span className="block text-[10px] md:text-[11px] font-semibold text-primary mt-0.5">
+              (2026-전남광주통합특별시-1호)
+            </span>
           </Link>
 
           {/* 우측: 비로그인 = 버튼 / 로그인 = 사용자 */}

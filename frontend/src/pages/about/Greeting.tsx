@@ -4,10 +4,6 @@ import { SAMPLE_IMAGES } from '../../lib/sampleImages'
 export default function Greeting() {
   return (
     <StaticPage title="방문 인사" image={SAMPLE_IMAGES[0]}>
-      <span className="inline-block border-2 border-primary text-primary font-bold text-sm px-3 py-1 rounded mb-6">
-        2026-전남광주통합특별시 1호
-      </span>
-
       <h2 className="text-xl font-bold text-gray-900 mb-5">안녕하십니까.</h2>
 
       <div className="space-y-4">

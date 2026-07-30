@@ -13,6 +13,9 @@ export default function Footer() {
             <span className="block text-[16px] font-extrabold text-gray-900 tracking-tight">
               대한민국골프<span className="text-primary">&amp;</span>파크기술협회
             </span>
+            <span className="block text-[10px] font-semibold text-primary mt-0.5">
+              (2026-전남광주통합특별시-1호)
+            </span>
           </div>
           <p className="text-xs text-gray-400 leading-relaxed">
             건강한 골프 문화와 파크골프 기술의<br />

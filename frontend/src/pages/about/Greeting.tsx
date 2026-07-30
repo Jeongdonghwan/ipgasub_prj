@@ -36,6 +36,7 @@ export default function Greeting() {
         <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mb-3" />
         <p className="text-sm text-gray-500 mb-2">2026. 7. 9.</p>
         <p className="text-sm font-semibold text-gray-700">사단법인 대한민국골프&amp;파크기술협회</p>
+        <p className="text-xs font-semibold text-primary">(2026-전남광주통합특별시-1호)</p>
         <p className="text-base font-bold text-gray-900 mt-1">
           협회장 <span className="text-gray-500 font-medium">海松</span> 김광만
         </p>

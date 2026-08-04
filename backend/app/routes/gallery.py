@@ -39,7 +39,7 @@ def create_album():
     album = GalleryAlbum(
         title=data['title'],
         description=data.get('description', ''),
-        author_id=get_jwt_identity(),
+        author_id=int(get_jwt_identity()),
     )
     db.session.add(album)
     db.session.commit()

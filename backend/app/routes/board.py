@@ -75,7 +75,7 @@ def create_post():
     board_type = payload['board_type']
     if board_type not in VALID_BOARD_TYPES:
         return jsonify({'success': False, 'error': '잘못된 게시판입니다.'}), 400
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     if board_type in ADMIN_BOARDS:
         user = User.query.get(user_id)
         if not user or user.role != 'admin':
@@ -98,7 +98,7 @@ def create_post():
 @jwt_required()
 def update_post(post_id):
     post = BoardPost.query.get_or_404(post_id)
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     if not _can_modify(user_id, post.author_id):
         return jsonify({'success': False, 'error': '권한이 없습니다.'}), 403
     payload, img = _post_payload()
@@ -119,7 +119,7 @@ def update_post(post_id):
 @jwt_required()
 def delete_post(post_id):
     post = BoardPost.query.get_or_404(post_id)
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     if not _can_modify(user_id, post.author_id):
         return jsonify({'success': False, 'error': '권한이 없습니다.'}), 403
     db.session.delete(post)
@@ -143,7 +143,7 @@ def add_comment(post_id):
         parent_id = parent.parent_id or parent.id
     comment = BoardComment(
         post_id=post_id,
-        author_id=get_jwt_identity(),
+        author_id=int(get_jwt_identity()),
         content=data['content'],
         parent_id=parent_id,
     )
@@ -156,7 +156,7 @@ def add_comment(post_id):
 @jwt_required()
 def delete_comment(post_id, comment_id):
     comment = BoardComment.query.filter_by(id=comment_id, post_id=post_id).first_or_404()
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     if not _can_modify(user_id, comment.author_id):
         return jsonify({'success': False, 'error': '권한이 없습니다.'}), 403
     db.session.delete(comment)

@@ -50,9 +50,18 @@ export default function BoardDetail() {
 
   const canEdit = isAdmin() || user?.id === post.author_id
 
+  const apiError = (e: unknown) =>
+    (e as { response?: { data?: { error?: string; msg?: string } } })?.response?.data?.error
+    ?? (e as { response?: { data?: { msg?: string } } })?.response?.data?.msg
+    ?? '요청에 실패했습니다. 다시 로그인 후 시도해 주세요.'
+
   const handleDelete = async () => {
-    await api.delete(`/api/board/${id}`)
-    navigate(`/board/${config.slug}`)
+    try {
+      await api.delete(`/api/board/${id}`)
+      navigate(`/board/${config.slug}`)
+    } catch (e) {
+      alert(apiError(e))
+    }
   }
 
   const reload = async () => {
@@ -63,22 +72,34 @@ export default function BoardDetail() {
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!comment.trim()) return
-    await api.post(`/api/board/${id}/comments`, { content: comment })
-    setComment('')
-    reload()
+    try {
+      await api.post(`/api/board/${id}/comments`, { content: comment })
+      setComment('')
+      reload()
+    } catch (err) {
+      alert(apiError(err))
+    }
   }
 
   const handleReply = async (parentId: number) => {
     if (!replyText.trim()) return
-    await api.post(`/api/board/${id}/comments`, { content: replyText, parent_id: parentId })
-    setReplyText('')
-    setReplyTo(null)
-    reload()
+    try {
+      await api.post(`/api/board/${id}/comments`, { content: replyText, parent_id: parentId })
+      setReplyText('')
+      setReplyTo(null)
+      reload()
+    } catch (err) {
+      alert(apiError(err))
+    }
   }
 
   const handleDeleteComment = async (commentId: number) => {
-    await api.delete(`/api/board/${id}/comments/${commentId}`)
-    reload()
+    try {
+      await api.delete(`/api/board/${id}/comments/${commentId}`)
+      reload()
+    } catch (err) {
+      alert(apiError(err))
+    }
   }
 
   return (

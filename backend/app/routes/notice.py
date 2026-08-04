@@ -70,7 +70,7 @@ def create_notice():
         category=payload['category'],
         title=payload['title'],
         content=payload['content'],
-        author_id=get_jwt_identity(),
+        author_id=int(get_jwt_identity()),
         is_pinned=payload['is_pinned'],
     )
     if thumb_file and thumb_file.filename:

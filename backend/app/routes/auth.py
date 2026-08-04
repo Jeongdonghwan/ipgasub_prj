@@ -51,8 +51,9 @@ def login():
     if user.role != 'admin' and not user.is_approved:
         return jsonify({'success': False, 'error': '관리자 승인 대기 중인 계정입니다. 승인 후 로그인할 수 있습니다.'}), 403
 
-    access_token = create_access_token(identity=user.id)
-    refresh_token = create_refresh_token(identity=user.id)
+    # PyJWT 2.10+ 는 sub 클레임이 문자열이어야 함 — int 로 넣으면 검증 시 422
+    access_token = create_access_token(identity=str(user.id))
+    refresh_token = create_refresh_token(identity=str(user.id))
     return jsonify({
         'success': True,
         'data': {
@@ -74,7 +75,7 @@ def refresh():
 @auth_bp.route('/me', methods=['GET'])
 @jwt_required()
 def me():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get_or_404(user_id)
     return jsonify({'success': True, 'data': user.to_dict()})
 

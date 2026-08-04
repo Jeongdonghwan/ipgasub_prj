@@ -69,7 +69,7 @@ def create_certificate():
     if cert_type not in CERT_TYPES:
         return jsonify({'success': False, 'error': '증명서 종류를 선택하세요.'}), 400
     req = CertificateRequest(
-        user_id=get_jwt_identity(),
+        user_id=int(get_jwt_identity()),
         cert_type=cert_type,
         purpose=(data.get('purpose') or '').strip(),
     )
@@ -85,7 +85,7 @@ def create_certificate():
 @request_bp.route('/certificates/mine', methods=['GET'])
 @jwt_required()
 def my_certificates():
-    items = CertificateRequest.query.filter_by(user_id=get_jwt_identity()) \
+    items = CertificateRequest.query.filter_by(user_id=int(get_jwt_identity())) \
         .order_by(CertificateRequest.created_at.desc()).all()
     return jsonify({'success': True, 'data': {'items': [r.to_dict() for r in items]}})
 

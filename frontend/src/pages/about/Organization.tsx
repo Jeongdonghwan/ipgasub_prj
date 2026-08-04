@@ -1,7 +1,7 @@
 import StaticPage from '../../components/common/StaticPage'
 import { SAMPLE_IMAGES } from '../../lib/sampleImages'
 
-const VICE_PRESIDENTS = ['정순권', '안일덕', '이윤창']
+const VICE_PRESIDENTS = ['정순권', '류기덕', '이윤창']
 
 export default function Organization() {
   return (

@@ -94,7 +94,7 @@ with app.app_context():
     NOTICES = [
         ('general', '정회원선발 테스트대회 안내', True),
         ('general', '전문인 골프대회 개최', False),
-        ('general', '전국 아마추어 골프대회', False),
+        ('general', 'KGPTA 파크골프 대회', False),
         ('general', '정회원 친선골프대회', False),
         ('general', '오픈 골프대회 참가 안내', False),
         ('general', '시니어부 골프대회 개최', False),

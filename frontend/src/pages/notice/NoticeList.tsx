@@ -19,7 +19,7 @@ interface Props {
 const MOCK_NOTICE_LIST: NoticeListResponse = {
   items: [
     { id: 1, category: 'general', title: '정회원선발 테스트대회 안내', content: '', author_id: 1, author_name: '관리자', is_pinned: true, views: 128, created_at: '2026.03.20', updated_at: '2026.03.20' },
-    { id: 2, category: 'general', title: '전국 아마추어 골프대회', content: '', author_id: 1, author_name: '관리자', is_pinned: false, views: 89, created_at: '2026.03.10', updated_at: '2026.03.10' },
+    { id: 2, category: 'general', title: 'KGPTA 파크골프 대회', content: '', author_id: 1, author_name: '관리자', is_pinned: false, views: 89, created_at: '2026.03.10', updated_at: '2026.03.10' },
     { id: 3, category: 'event', title: '2026 프로선수 선발전 공고', content: '', author_id: 1, author_name: '관리자', is_pinned: true, views: 67, created_at: '2026.03.05', updated_at: '2026.03.05' },
   ],
   total: 3, pages: 1, page: 1,

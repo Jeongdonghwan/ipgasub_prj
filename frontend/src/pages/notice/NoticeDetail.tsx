@@ -9,7 +9,7 @@ import type { Notice } from '../../types'
 
 const MOCK_NOTICES: Record<string, Notice> = {
   '1': { id: 1, category: 'general', title: '정회원선발 테스트대회 안내', content: '2026년 정회원 선발 테스트대회를 아래와 같이 개최합니다.\n\n■ 일시: 2026년 5월 10일(토)\n■ 장소: ○○컨트리클럽\n■ 접수: 홈페이지 회원등록신청서 제출\n\n많은 참여 바랍니다.', author_id: 1, author_name: '관리자', is_pinned: true, views: 128, created_at: '2026.03.20', updated_at: '2026.03.20' },
-  '2': { id: 2, category: 'general', title: '전국 아마추어 골프대회', content: '전국 아마추어 골프대회 참가 접수를 받습니다.\n\n골프를 사랑하는 아마추어라면 누구나 참가 가능합니다.', author_id: 1, author_name: '관리자', is_pinned: false, views: 89, created_at: '2026.03.10', updated_at: '2026.03.10' },
+  '2': { id: 2, category: 'general', title: 'KGPTA 파크골프 대회', content: 'KGPTA 파크골프 대회 참가 접수를 받습니다.\n\n파크골프를 사랑하는 분이라면 누구나 참가 가능합니다.', author_id: 1, author_name: '관리자', is_pinned: false, views: 89, created_at: '2026.03.10', updated_at: '2026.03.10' },
   '3': { id: 3, category: 'event', title: '2026 프로선수 선발전 공고', content: '2026년 프로선수 선발전을 공고합니다.\n\n자격 요건 및 접수 방법은 회원안내 > 선발안내를 참고하세요.', author_id: 1, author_name: '관리자', is_pinned: true, views: 67, created_at: '2026.03.05', updated_at: '2026.03.05' },
 }
 

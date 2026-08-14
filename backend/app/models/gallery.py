@@ -10,6 +10,7 @@ class GalleryAlbum(db.Model):
     description = db.Column(db.Text, default='')
     cover_image = db.Column(db.String(500))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    sort_order = db.Column(db.Integer, nullable=False, server_default='0', default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     author = db.relationship('User', backref='albums')
@@ -25,6 +26,7 @@ class GalleryAlbum(db.Model):
             'author_id': self.author_id,
             'author_name': self.author.name if self.author else '',
             'photo_count': len(self.photos),
+            'sort_order': self.sort_order,
             'created_at': self.created_at.strftime('%Y.%m.%d'),
         }
         if include_photos:

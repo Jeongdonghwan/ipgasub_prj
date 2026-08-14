@@ -100,6 +100,7 @@ export interface GalleryAlbum {
   author_name: string
   photo_count: number
   photos?: GalleryPhoto[]
+  sort_order?: number
   created_at: string
 }
 

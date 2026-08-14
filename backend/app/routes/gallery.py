@@ -11,10 +11,10 @@ gallery_bp = Blueprint('gallery', __name__)
 @gallery_bp.route('/', methods=['GET'])
 def list_albums():
     page = request.args.get('page', 1, type=int)
-    per_page = 12
-    pagination = GalleryAlbum.query.order_by(GalleryAlbum.created_at.desc()).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
+    per_page = min(request.args.get('per_page', 12, type=int), 100)
+    pagination = GalleryAlbum.query.order_by(
+        GalleryAlbum.sort_order.asc(), GalleryAlbum.created_at.desc()
+    ).paginate(page=page, per_page=per_page, error_out=False)
     return jsonify({
         'success': True,
         'data': {
@@ -24,6 +24,21 @@ def list_albums():
             'page': page,
         }
     })
+
+
+@gallery_bp.route('/albums/order', methods=['PATCH'])
+@admin_required
+def reorder_albums():
+    order = (request.get_json() or {}).get('order')
+    if not isinstance(order, list) or not all(isinstance(i, int) for i in order):
+        return jsonify({'success': False, 'error': '잘못된 요청입니다.'}), 400
+    albums = {a.id: a for a in GalleryAlbum.query.all()}
+    if set(order) != set(albums.keys()):
+        return jsonify({'success': False, 'error': '앨범 목록이 변경되었습니다. 새로고침 후 다시 시도하세요.'}), 409
+    for idx, aid in enumerate(order):
+        albums[aid].sort_order = idx
+    db.session.commit()
+    return jsonify({'success': True, 'data': {}})
 
 
 @gallery_bp.route('/<int:album_id>', methods=['GET'])

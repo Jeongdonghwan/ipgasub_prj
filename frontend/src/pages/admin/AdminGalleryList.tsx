@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Upload, Trash2, Image } from 'lucide-react'
+import { Plus, Upload, Trash2, Image, GripVertical, ChevronUp, ChevronDown } from 'lucide-react'
 import api from '../../api/axios'
 import PageHeader from '../../components/common/PageHeader'
 import ConfirmModal from '../../components/common/ConfirmModal'
@@ -14,10 +14,13 @@ export default function AdminGalleryList() {
   const [desc, setDesc] = useState('')
   const [creating, setCreating] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [overIndex, setOverIndex] = useState<number | null>(null)
+  const [savingOrder, setSavingOrder] = useState(false)
   const toast = useToastStore()
 
   const load = () => {
-    api.get('/api/gallery/?page=1').then((r) => setAlbums(r.data.data?.items ?? []))
+    api.get('/api/gallery/?page=1&per_page=100').then((r) => setAlbums(r.data.data?.items ?? []))
   }
 
   useEffect(load, [])
@@ -40,9 +43,46 @@ export default function AdminGalleryList() {
 
   const handleDelete = async () => {
     if (deleteId === null) return
-    await api.delete(`/api/gallery/${deleteId}`)
-    setDeleteId(null)
-    load()
+    try {
+      await api.delete(`/api/gallery/${deleteId}`)
+      toast.show('success', '앨범이 삭제되었습니다.')
+      load()
+    } catch {
+      toast.show('error', '삭제에 실패했습니다.')
+    } finally {
+      setDeleteId(null)
+    }
+  }
+
+  const saveOrder = async (next: GalleryAlbum[]) => {
+    const prev = albums
+    setAlbums(next)
+    setSavingOrder(true)
+    try {
+      await api.patch('/api/gallery/albums/order', { order: next.map((a) => a.id) })
+    } catch (err) {
+      setAlbums(prev)
+      toast.show('error', '순서 저장에 실패했습니다.')
+      if ((err as { response?: { status?: number } })?.response?.status === 409) load()
+    } finally {
+      setSavingOrder(false)
+    }
+  }
+
+  const handleReorderDrop = (target: number) => {
+    if (dragIndex === null || dragIndex === target) return
+    const next = [...albums]
+    const [moved] = next.splice(dragIndex, 1)
+    next.splice(target, 0, moved)
+    saveOrder(next)
+  }
+
+  const moveBy = (i: number, delta: number) => {
+    const j = i + delta
+    if (j < 0 || j >= albums.length) return
+    const next = [...albums]
+    ;[next[i], next[j]] = [next[j], next[i]]
+    saveOrder(next)
   }
 
   return (
@@ -69,11 +109,14 @@ export default function AdminGalleryList() {
         </form>
 
         {/* 앨범 목록 */}
+        {albums.length > 0 && (
+          <p className="text-xs text-gray-400 mb-2">행을 드래그하면 홈페이지에 노출되는 앨범 순서가 바뀝니다.</p>
+        )}
         <div className="card overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th className="text-left px-4 py-3 text-gray-500 font-medium w-16">번호</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-medium w-28">순서</th>
                 <th className="text-left px-4 py-3 text-gray-500 font-medium">제목</th>
                 <th className="text-left px-4 py-3 text-gray-500 font-medium w-20">사진수</th>
                 <th className="text-left px-4 py-3 text-gray-500 font-medium w-24">날짜</th>
@@ -88,9 +131,40 @@ export default function AdminGalleryList() {
                   </td>
                 </tr>
               )}
-              {albums.map((a) => (
-                <tr key={a.id} className="border-t border-gray-50 hover:bg-primary-light transition-colors">
-                  <td className="px-4 py-3 text-gray-400">{a.id}</td>
+              {albums.map((a, i) => (
+                <tr
+                  key={a.id}
+                  draggable={!savingOrder}
+                  onDragStart={(e) => { setDragIndex(i); e.dataTransfer.effectAllowed = 'move' }}
+                  onDragOver={(e) => { e.preventDefault(); if (i !== overIndex) setOverIndex(i) }}
+                  onDrop={(e) => { e.preventDefault(); handleReorderDrop(i); setDragIndex(null); setOverIndex(null) }}
+                  onDragEnd={() => { setDragIndex(null); setOverIndex(null) }}
+                  className={`border-t border-gray-50 cursor-grab transition-colors
+                    ${dragIndex === i ? 'opacity-40' : 'hover:bg-primary-light'}
+                    ${overIndex === i && dragIndex !== null && dragIndex !== i ? 'bg-primary-light shadow-[inset_0_2px_0_0_#2f7d4f]' : ''}`}
+                >
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1 text-gray-400">
+                      <GripVertical className="w-3.5 h-3.5 shrink-0" />
+                      <span className="w-4 text-center">{i + 1}</span>
+                      <button
+                        onClick={() => moveBy(i, -1)}
+                        disabled={savingOrder || i === 0}
+                        aria-label="위로"
+                        className="w-5 h-5 rounded hover:bg-gray-100 hover:text-primary flex items-center justify-center disabled:opacity-25"
+                      >
+                        <ChevronUp className="w-3 h-3" />
+                      </button>
+                      <button
+                        onClick={() => moveBy(i, 1)}
+                        disabled={savingOrder || i === albums.length - 1}
+                        aria-label="아래로"
+                        className="w-5 h-5 rounded hover:bg-gray-100 hover:text-primary flex items-center justify-center disabled:opacity-25"
+                      >
+                        <ChevronDown className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-gray-700">{a.title}</td>
                   <td className="px-4 py-3 text-gray-400">{a.photo_count}장</td>
                   <td className="px-4 py-3 text-gray-400">{a.created_at}</td>

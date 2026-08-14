@@ -34,3 +34,18 @@ def save_image(file, upload_folder):
     thumbnail_rel = os.path.join(sub_folder, thumb_basename).replace('\\', '/')
 
     return original_rel, thumbnail_rel
+
+
+def delete_image(rel_path, upload_folder):
+    """rel_path('YYYY/MM/name.ext')의 디스크 파일 삭제. 파일이 없어도 조용히 넘어감."""
+    if not rel_path:
+        return
+    base = os.path.abspath(upload_folder)
+    abs_path = os.path.abspath(os.path.join(base, rel_path))
+    # upload_folder 밖 경로는 거부 (path traversal 방어)
+    if not abs_path.startswith(base + os.sep):
+        return
+    try:
+        os.remove(abs_path)
+    except OSError:
+        pass

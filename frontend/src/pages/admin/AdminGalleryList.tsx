@@ -98,7 +98,7 @@ export default function AdminGalleryList() {
                     <div className="flex gap-2">
                       <Link to={`/admin/gallery/${a.id}/upload`} className="text-xs text-primary hover:underline flex items-center gap-0.5">
                         <Upload className="w-3 h-3" />
-                        사진 업로드
+                        사진 관리
                       </Link>
                       <button onClick={() => setDeleteId(a.id)} className="text-xs text-red-500 hover:underline flex items-center gap-0.5">
                         <Trash2 className="w-3 h-3" />

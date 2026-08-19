@@ -10,6 +10,7 @@ const ADMIN_LINKS = [
   { label: '회원관리', to: '/admin/members' },
   { label: '등록신청', to: '/admin/registrations' },
   { label: '증명서', to: '/admin/certificates' },
+  { label: '사이트설정', to: '/admin/settings' },
 ]
 
 export default function Header() {

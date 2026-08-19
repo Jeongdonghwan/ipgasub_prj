@@ -31,7 +31,7 @@ def create_app():
     # 모델 임포트 (Flask-Migrate 탐색용)
     from .models import (  # noqa: F401
         User, Notice, BoardPost, BoardComment, GalleryAlbum, GalleryPhoto,
-        RegistrationRequest, CertificateRequest,
+        RegistrationRequest, CertificateRequest, SiteSetting,
     )
 
     # Blueprint 등록
@@ -40,12 +40,14 @@ def create_app():
     from .routes.board import board_bp
     from .routes.gallery import gallery_bp
     from .routes.request import request_bp
+    from .routes.setting import setting_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(notice_bp, url_prefix='/api/notices')
     app.register_blueprint(board_bp, url_prefix='/api/board')
     app.register_blueprint(gallery_bp, url_prefix='/api/gallery')
     app.register_blueprint(request_bp, url_prefix='/api/requests')
+    app.register_blueprint(setting_bp, url_prefix='/api/settings')
 
     # 업로드 파일 정적 서빙 (개발용, 프로덕션은 Nginx)
     @app.route('/uploads/<path:filename>')

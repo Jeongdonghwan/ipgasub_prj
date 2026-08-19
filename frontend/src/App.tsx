@@ -44,6 +44,7 @@ const AdminGalleryList = lazy(() => import('./pages/admin/AdminGalleryList'))
 const AdminGalleryUpload = lazy(() => import('./pages/admin/AdminGalleryUpload'))
 const AdminRegistrationList = lazy(() => import('./pages/admin/AdminRegistrationList'))
 const AdminCertificateList = lazy(() => import('./pages/admin/AdminCertificateList'))
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'))
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { isLoggedIn } = useAuthStore()
@@ -122,6 +123,7 @@ export default function App() {
           <Route path="/admin/gallery/:id/upload" element={<RequireAdmin><AdminGalleryUpload /></RequireAdmin>} />
           <Route path="/admin/registrations" element={<RequireAdmin><AdminRegistrationList /></RequireAdmin>} />
           <Route path="/admin/certificates" element={<RequireAdmin><AdminCertificateList /></RequireAdmin>} />
+          <Route path="/admin/settings" element={<RequireAdmin><AdminSettings /></RequireAdmin>} />
 
           {/* fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

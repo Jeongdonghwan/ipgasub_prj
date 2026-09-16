@@ -87,6 +87,16 @@ export default function AdminGalleryUpload() {
     }
   }
 
+  /** 실패 원인을 화면에서 바로 알 수 있도록 상태코드/서버 메시지를 함께 표시 */
+  const apiError = (err: unknown, prefix: string) => {
+    const res = (err as { response?: { status?: number; data?: { error?: string } } })?.response
+    if (!res) return `${prefix} — 서버에 연결하지 못했습니다.`
+    if (res.status === 404) return `${prefix} — 서버가 업데이트되지 않았습니다. (백엔드 재시작 필요)`
+    if (res.status === 401 || res.status === 422) return `${prefix} — 로그인이 만료되었습니다. 다시 로그인해 주세요.`
+    if (res.status === 403) return `${prefix} — 관리자 권한이 필요합니다.`
+    return res.data?.error ?? `${prefix} (오류코드 ${res.status})`
+  }
+
   const confirmDelete = async () => {
     if (!deleteTarget) return
     try {
@@ -95,8 +105,8 @@ export default function AdminGalleryUpload() {
       // 대표 이미지를 지운 경우 서버가 정한 새 대표 이미지로 갱신
       setCoverImage(r.data.data?.cover_image ?? null)
       toast.show('success', '사진이 삭제되었습니다.')
-    } catch {
-      toast.show('error', '삭제에 실패했습니다.')
+    } catch (err) {
+      toast.show('error', apiError(err, '사진 삭제 실패'))
     } finally {
       setDeleteTarget(null)
     }
@@ -107,10 +117,10 @@ export default function AdminGalleryUpload() {
     setCoverImage(photo.thumbnail)
     try {
       await api.patch(`/api/gallery/${id}/photos/${photo.id}/cover`)
-      toast.show('success', '대표 이미지로 설정되었습니다.')
-    } catch {
+      toast.show('success', '대표이미지로 설정되었습니다.')
+    } catch (err) {
       setCoverImage(prev)
-      toast.show('error', '대표 이미지 설정에 실패했습니다.')
+      toast.show('error', apiError(err, '대표이미지 설정 실패'))
     }
   }
 
@@ -122,7 +132,7 @@ export default function AdminGalleryUpload() {
       await api.patch(`/api/gallery/${id}/photos/order`, { order: next.map((p) => p.id) })
     } catch (err) {
       setPhotos(prev)
-      toast.show('error', '순서 저장에 실패했습니다.')
+      toast.show('error', apiError(err, '순서 저장 실패'))
       if ((err as { response?: { status?: number } })?.response?.status === 409) fetchPhotos()
     } finally {
       setSavingOrder(false)
@@ -160,7 +170,7 @@ export default function AdminGalleryUpload() {
               <h3 className="text-sm font-semibold text-gray-700">
                 등록된 사진 <span className="text-primary">{photos.length}</span>장
               </h3>
-              <span className="text-xs text-gray-400">드래그하여 순서 변경 · 별 버튼으로 대표 이미지 지정</span>
+              <span className="text-xs text-gray-400">드래그하여 순서 변경 · 사진 아래 버튼으로 대표이미지 지정</span>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
               {photos.map((p, i) => {
@@ -182,25 +192,13 @@ export default function AdminGalleryUpload() {
                   <span className="absolute top-1 left-1 w-5 h-5 rounded bg-black/40 text-white flex items-center justify-center">
                     <GripVertical className="w-3 h-3" />
                   </span>
-                  <div className="absolute top-1 right-1 flex gap-1">
-                    {!isCover && (
-                      <button
-                        onClick={() => handleSetCover(p)}
-                        aria-label="대표 이미지로 설정"
-                        title="대표 이미지로 설정"
-                        className="w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-accent hover:text-ink transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Star className="w-3 h-3" />
-                      </button>
-                    )}
-                    <button
-                      onClick={() => setDeleteTarget(p)}
-                      aria-label="사진 삭제"
-                      className="w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setDeleteTarget(p)}
+                    aria-label="사진 삭제"
+                    className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
                   {/* 터치 기기용 순서 이동 버튼 */}
                   <div className="absolute inset-x-1 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
@@ -220,11 +218,20 @@ export default function AdminGalleryUpload() {
                       <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
-                  {isCover && (
-                    <span className="absolute bottom-0 inset-x-0 bg-accent text-ink text-[9px] font-bold py-0.5 flex items-center justify-center gap-0.5">
+                  {/* 대표이미지 — 지정된 사진은 항상 표시, 나머지는 hover 시 설정 버튼 */}
+                  {isCover ? (
+                    <span className="absolute bottom-0 inset-x-0 bg-accent text-ink text-[10px] font-bold py-1 flex items-center justify-center gap-0.5">
                       <Star className="w-2.5 h-2.5 fill-current" />
-                      대표 이미지
+                      대표이미지
                     </span>
+                  ) : (
+                    <button
+                      onClick={() => handleSetCover(p)}
+                      className="absolute bottom-0 inset-x-0 bg-black/70 text-white text-[10px] font-medium py-1 flex items-center justify-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent hover:text-ink"
+                    >
+                      <Star className="w-2.5 h-2.5" />
+                      대표이미지 설정
+                    </button>
                   )}
                 </div>
                 )

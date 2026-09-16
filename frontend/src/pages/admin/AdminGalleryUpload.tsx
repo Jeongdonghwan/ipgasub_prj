@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Upload, X, Image, Trash2, GripVertical, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Upload, X, Image, Trash2, GripVertical, ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import api from '../../api/axios'
 import PageHeader from '../../components/common/PageHeader'
 import ConfirmModal from '../../components/common/ConfirmModal'
@@ -17,6 +17,7 @@ export default function AdminGalleryUpload() {
   const [progress, setProgress] = useState(0)
   const [photos, setPhotos] = useState<GalleryPhoto[]>([])
   const [albumTitle, setAlbumTitle] = useState('')
+  const [coverImage, setCoverImage] = useState<string | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<GalleryPhoto | null>(null)
   const [dragIndex, setDragIndex] = useState<number | null>(null)
   const [overIndex, setOverIndex] = useState<number | null>(null)
@@ -28,6 +29,7 @@ export default function AdminGalleryUpload() {
       const r = await api.get(`/api/gallery/${id}`)
       setPhotos(r.data.data?.photos ?? [])
       setAlbumTitle(r.data.data?.title ?? '')
+      setCoverImage(r.data.data?.cover_image ?? null)
     } catch {
       toast.show('error', '앨범 정보를 불러오지 못했습니다.')
     }
@@ -88,13 +90,27 @@ export default function AdminGalleryUpload() {
   const confirmDelete = async () => {
     if (!deleteTarget) return
     try {
-      await api.delete(`/api/gallery/${id}/photos/${deleteTarget.id}`)
+      const r = await api.delete(`/api/gallery/${id}/photos/${deleteTarget.id}`)
       setPhotos((prev) => prev.filter((p) => p.id !== deleteTarget.id))
+      // 대표 이미지를 지운 경우 서버가 정한 새 대표 이미지로 갱신
+      setCoverImage(r.data.data?.cover_image ?? null)
       toast.show('success', '사진이 삭제되었습니다.')
     } catch {
       toast.show('error', '삭제에 실패했습니다.')
     } finally {
       setDeleteTarget(null)
+    }
+  }
+
+  const handleSetCover = async (photo: GalleryPhoto) => {
+    const prev = coverImage
+    setCoverImage(photo.thumbnail)
+    try {
+      await api.patch(`/api/gallery/${id}/photos/${photo.id}/cover`)
+      toast.show('success', '대표 이미지로 설정되었습니다.')
+    } catch {
+      setCoverImage(prev)
+      toast.show('error', '대표 이미지 설정에 실패했습니다.')
     }
   }
 
@@ -144,10 +160,12 @@ export default function AdminGalleryUpload() {
               <h3 className="text-sm font-semibold text-gray-700">
                 등록된 사진 <span className="text-primary">{photos.length}</span>장
               </h3>
-              <span className="text-xs text-gray-400">드래그하여 순서 변경 · 첫 번째 사진 순으로 노출</span>
+              <span className="text-xs text-gray-400">드래그하여 순서 변경 · 별 버튼으로 대표 이미지 지정</span>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-              {photos.map((p, i) => (
+              {photos.map((p, i) => {
+                const isCover = coverImage === p.thumbnail
+                return (
                 <div
                   key={p.id}
                   draggable={!savingOrder}
@@ -157,21 +175,34 @@ export default function AdminGalleryUpload() {
                   onDragEnd={() => { setDragIndex(null); setOverIndex(null) }}
                   className={`relative aspect-square rounded-lg overflow-hidden bg-gray-100 cursor-grab group
                     ${dragIndex === i ? 'opacity-40' : ''}
+                    ${isCover ? 'ring-2 ring-accent' : ''}
                     ${overIndex === i && dragIndex !== null && dragIndex !== i ? 'ring-2 ring-primary' : ''}`}
                 >
                   <img src={`/uploads/${p.thumbnail}`} alt={p.caption} draggable={false} className="w-full h-full object-cover select-none" />
                   <span className="absolute top-1 left-1 w-5 h-5 rounded bg-black/40 text-white flex items-center justify-center">
                     <GripVertical className="w-3 h-3" />
                   </span>
-                  <button
-                    onClick={() => setDeleteTarget(p)}
-                    aria-label="사진 삭제"
-                    className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
+                  <div className="absolute top-1 right-1 flex gap-1">
+                    {!isCover && (
+                      <button
+                        onClick={() => handleSetCover(p)}
+                        aria-label="대표 이미지로 설정"
+                        title="대표 이미지로 설정"
+                        className="w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-accent hover:text-ink transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Star className="w-3 h-3" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setDeleteTarget(p)}
+                      aria-label="사진 삭제"
+                      className="w-5 h-5 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
                   {/* 터치 기기용 순서 이동 버튼 */}
-                  <div className="absolute bottom-1 inset-x-1 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-x-1 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => moveBy(i, -1)}
                       disabled={savingOrder || i === 0}
@@ -189,8 +220,15 @@ export default function AdminGalleryUpload() {
                       <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
+                  {isCover && (
+                    <span className="absolute bottom-0 inset-x-0 bg-accent text-ink text-[9px] font-bold py-0.5 flex items-center justify-center gap-0.5">
+                      <Star className="w-2.5 h-2.5 fill-current" />
+                      대표 이미지
+                    </span>
+                  )}
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}

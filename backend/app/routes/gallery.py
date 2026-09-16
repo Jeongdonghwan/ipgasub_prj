@@ -127,6 +127,16 @@ def delete_photo(album_id, photo_id):
     return jsonify({'success': True, 'data': {'cover_image': album.cover_image}})
 
 
+@gallery_bp.route('/<int:album_id>/photos/<int:photo_id>/cover', methods=['PATCH'])
+@admin_required
+def set_cover(album_id, photo_id):
+    photo = GalleryPhoto.query.filter_by(id=photo_id, album_id=album_id).first_or_404()
+    album = photo.album
+    album.cover_image = photo.thumbnail
+    db.session.commit()
+    return jsonify({'success': True, 'data': {'cover_image': album.cover_image}})
+
+
 @gallery_bp.route('/<int:album_id>/photos/order', methods=['PATCH'])
 @admin_required
 def reorder_photos(album_id):
